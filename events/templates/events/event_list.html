@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Eventos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .page-title {
+            margin-bottom: 20px;
+        }
+
+        .event-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .event-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-item h3 {
+            margin-top: 0;
+        }
+
+        .event-item .btn {
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+        }
+
+        .success-message {
+            color: #28a745;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">Eventos</h1>
+
+        {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="post" class="form-group">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+        {% else %}
+            <a href="{% url 'signup' %}" class="btn btn-primary">Cadastrar Usuário</a>
+            <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+        {% endif %}
+
+        <a href="{% url 'event_create' %}" class="btn btn-success">Novo Evento</a>
+        <a href="http://127.0.0.1:8000/" class="btn btn-info">Chat em Tempo Real</a>
+
+        <ul class="event-list">
+            {% for event in events %}
+                <li class="event-item">
+                    <h3>{{ event.name }}</h3>
+                    <p><strong>Data:</strong> {{ event.date }}</p>
+                    <p><strong>Localização:</strong> {{ event.location }}</p>
+                    <p><strong>Descrição:</strong> {{ event.description }}</p>
+                    <div>
+                        <a href="{% url 'event_update' event.id %}" class="btn btn-primary">Atualizar</a>
+                        <a href="{% url 'event_delete' event.id %}" class="btn btn-danger">Deletar</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

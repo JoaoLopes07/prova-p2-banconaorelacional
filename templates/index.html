@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background: rgb(177,177,186);
+    background: linear-gradient(90deg, rgba(177,177,186,1) 0%, rgba(0,208,237,1) 76%);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+}
+input[type='text'] {
+    width: 200px;
+    height: 25px;
+}
+button {
+    width: 100px;
+    display: flex;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+    </style>
+    <title>Chat Real</title>
+    <script>
+        var ws = new WebSocket("ws://localhost:8000/ws");
+
+        ws.onopen = function(event) {
+            console.log("Conectado ao servidor WebSocket.");
+        };
+
+        ws.onmessage = function(event) {
+            var messageBox = document.getElementById("messages");
+            messageBox.innerHTML += "<p>" + event.data + "</p>";
+        };
+
+        function sendMessage() {
+            var messageInput = document.getElementById("message");
+            var message = messageInput.value;
+            ws.send(message);
+            messageInput.value = "";
+        }
+    </script>
+</head>
+<body>
+    <h1>Chat do Lopes</h1>
+    <div id="messages"></div>
+    <input type="text" id="message" placeholder="Digite uma mensagem...">
+    <button onclick="sendMessage()">Enviar</button>
+</body>
+</html>
